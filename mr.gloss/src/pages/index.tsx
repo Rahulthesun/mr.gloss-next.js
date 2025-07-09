@@ -9,6 +9,8 @@ import WhyChooseUs from '../components/StatItem'
 import ProfileCard from '../components/ProfileCard'
 import Footer from '../components/Footer'
 import CarAnimationComponent from '../components/CarAnimation'
+import ShinyText from '../components/ShinyText'
+import BackgroundText from '../components/BackGroundText'
 import TiltCard from '../components/TiltCard'
 import { SpotlightRatingCard } from '../components/SpotlightRatingCard'
 
@@ -133,8 +135,12 @@ export default function Home(): JSX.Element {
       <nav className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
         <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
-            <div className="w-72 h-auto">
-              <img className="h-full w-auto" src="assets/images/logo-v2.png" alt="Mr.Gloss Ceramic Coating Logo"></img>
+            <div className="max-w-[180px] h-auto flex items-center">
+              <img
+                className="w-full max-h-16 object-contain"
+                src="assets/images/logo-v2.png"
+                alt="Mr.Gloss Ceramic Coating Logo"
+              />
             </div>
             <div className="hidden md:flex space-x-8">
               <a href="#home" className="hover:text-green-400 transition-colors">Home</a>
@@ -147,28 +153,33 @@ export default function Home(): JSX.Element {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="pt-32 pb-20 px-6">
+      <section id="home" className="pt-10 pb-10 px-2">
+        <BackgroundText text="MR.GlOSS" />
         <CarAnimationComponent/>
       </section>
-
+s
       {/* Packages Section */}
       <section id="next-section" className="py-20 px-6">
         <div className="container mx-auto">
-          <h3 className="text-4xl font-bold text-center mb-16">Star Packages</h3>
+          <h3 className="text-5xl font-extrabold text-center mb-16">Star Packages</h3>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {packages.map((pkg: Package, index: number) => (
               <div 
                 key={index}
-                className={`bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
+                className={`bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
                   activePackage === index ? 'ring-2 ring-green-400' : ''
                 }`}
                 onMouseEnter={() => handlePackageHover(index)}
                 onMouseLeave={handlePackageLeave}
               >
-                <h4 className={`text-3xl font-bold mb-6 bg-gradient-to-r ${pkg.color} bg-clip-text text-transparent`}>
-                  {pkg.name}
-                </h4>
+                <ShinyText 
+  text={pkg.name}
+  disabled={false}
+  speed={3}
+  extraBold={true}
+  className={`text-4xl font-black mb-6 bg-gradient-to-r ${pkg.color} bg-clip-text text-transparent`}
+/>
                 
                 <div className="space-y-4 mb-8">
                   {pkg.features.map((feature: string, featureIndex: number) => (

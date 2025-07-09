@@ -48,7 +48,7 @@ const VIEWS: View[] = [
     label: 'CERAMIC COATING',
     rotationY: Math.PI / 2,
     rotationX: -0.1,
-    posY: -2,
+    posY:  -2,
     text: 'Advanced ceramic coating provides unmatched protection against UV rays, contaminants, and environmental damage while delivering a brilliant, long-lasting shine.'
   },
   {
@@ -56,7 +56,7 @@ const VIEWS: View[] = [
     label: 'PAINT CORRECTION',
     rotationY: Math.PI,
     rotationX: -0.1,
-    posY: -2,
+    posY:  -2,
     text: 'Professional paint correction removes swirl marks, scratches, and oxidation, restoring your vehicle\'s paint to its original mirror-like finish.'
   },
   {
@@ -64,15 +64,15 @@ const VIEWS: View[] = [
     label: 'DETAILING SERVICES',
     rotationY: -Math.PI / 2,
     rotationX: -0.1,
-    posY: -2,
+    posY:  -2,
     text: 'Complete interior and exterior detailing services designed to preserve your investment and maintain that showroom-quality appearance.'
   },
   {
     key: 'front-text',
     label: 'PREMIUM PROTECTION',
-    rotationY: 0,
-    rotationX: 0,
-    posY: -2,
+    rotationY: -0.5,
+    rotationX: -0.1,
+    posY:  -2,
     text: 'Experience the ultimate in automotive protection with our comprehensive ceramic coating and detailing solutions.'
   }
 ]
@@ -158,7 +158,7 @@ const AnimatedCar: React.FC<AnimatedCarProps> = ({ rotationY, rotationX, scale, 
   
   return (
     <group ref={group}>
-      <GlossyCarModel scale={typeof window !== 'undefined' && window.innerWidth > 900 ? 2.5 : 1.2} position={[0, 0, 0]} />
+      <GlossyCarModel scale={typeof window !== 'undefined' && window.innerWidth > 900 ? 2.8 : 1.2} position={[0, 0, 0]} />
     </group>
   )
 }
@@ -168,34 +168,19 @@ const BackgroundText: React.FC<BackgroundTextProps> = ({ show }) => {
     <div
       style={{
         position: 'absolute',
-        top: '50%',
+        top: '70%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '100%',
         textAlign: 'center',
         zIndex: 1,
         pointerEvents: 'none',
-        fontFamily: 'Inter, -apple-system, sans-serif',
+        fontFamily: 'Montserrat, sans-serif',
         color: '#ffffff',
-        opacity: 0.03,
+        opacity: 0.01,
         userSelect: 'none',
       }}
     >
-      <div
-        style={{
-          fontSize: 'clamp(3rem, 8vw, 6rem)',
-          fontWeight: 900,
-          letterSpacing: '0.08em',
-          marginBottom: '1rem',
-          textShadow: '0 0 60px rgba(255, 255, 255, 0.1)',
-          background: 'linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-        }}
-      >
-        PREMIUM
-      </div>
       <div
         style={{
           fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
@@ -222,6 +207,8 @@ const CarAnimationComponent: React.FC = () => {
   const [animationComplete, setAnimationComplete] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const current = VIEWS[step]
+  const lastScrollTime = useRef(0)
+  const SCROLL_THROTTLE = 300 // Reduced throttle for better responsiveness
 
   // Responsive resize effect
   useEffect(() => {
@@ -239,6 +226,87 @@ const CarAnimationComponent: React.FC = () => {
     posY: slideY,
     config: springConfig.gentle
   })
+
+  // Function to restart the animation
+  const restartAnimation = (): void => {
+    // Reset all state variables to initial values
+    setStep(0)
+    setZoom(1)
+    setSlide(0)
+    setSlideY(VIEWS[0].posY)
+    setShowText(false)
+    setIsTransitioning(false)
+    setAnimationComplete(false)
+    
+    // Reset body overflow to hidden to prevent scrolling during animation
+    document.body.style.overflow = 'hidden'
+    
+    // Reset the last scroll time to allow immediate interaction
+    lastScrollTime.current = 0
+    
+    // Trigger the initial animation sequence (zoom out then in)
+    setTimeout(() => {
+      setZoom(0.8)
+      setIsTransitioning(true)
+      
+      const zoomInTimeout = setTimeout(() => {
+        setZoom(1)
+        setIsTransitioning(false)
+      }, 200)
+    }, 50)
+  }
+
+  // Function to trigger the full animation sequence for a specific step
+  const animateToStep = (newStep: number): void => {
+    if (isTransitioning || newStep === step) return
+    
+    const newView = VIEWS[newStep]
+    setStep(newStep)
+    setShowText(false)
+    setSlide(0)
+    setSlideY(newView.posY)
+    setZoom(0.8)
+    setIsTransitioning(true)
+    
+    const zoomInTimeout = setTimeout(() => {
+      setZoom(1)
+      setIsTransitioning(false)
+      if (newView.text) {
+        setTimeout(() => {
+          setSlide(typeof window !== 'undefined' && window.innerWidth > 900 ? 2.2 : 1.2)
+          setSlideY(newView.posY)
+          setShowText(true)
+        }, 350)
+      }
+      
+      // Handle animation completion
+      if (newStep === VIEWS.length - 1) {
+        setTimeout(() => {
+          setAnimationComplete(true)
+          document.body.style.overflow = 'auto'
+        }, 1000)
+      } else {
+        setAnimationComplete(false)
+        document.body.style.overflow = 'hidden'
+      }
+    }, 200)
+  }
+
+  // Progress indicator click handler
+  const handleProgressClick = (index: number): void => {
+    if (animationComplete) {
+      // If animation is complete, restart the animation
+      restartAnimation()
+      
+      // After a short delay, animate to the selected step
+      setTimeout(() => {
+        animateToStep(index)
+      }, 300) // Give the restart animation time to begin
+    } else if (!isTransitioning) {
+      // Normal behavior during animation
+      animateToStep(index)
+    }
+  }
 
   // Animation sequence: zoom out, rotate, zoom in, then slide car and show text if needed
   useEffect(() => {
@@ -275,7 +343,7 @@ const CarAnimationComponent: React.FC = () => {
     return () => clearTimeout(zoomInTimeout)
   }, [])
 
-  // Handle scroll and click for view transitions
+  // Handle bidirectional scroll for view transitions
   useEffect(() => {
     const handleScroll = (e: WheelEvent): void => {
       if (animationComplete) {
@@ -284,17 +352,20 @@ const CarAnimationComponent: React.FC = () => {
       }
       
       e.preventDefault()
+      const now = Date.now()
+      if (now - lastScrollTime.current < SCROLL_THROTTLE) return
+
       if (!isTransitioning) {
-        const nextStep = (step + 1) % VIEWS.length
-        setStep(nextStep)
+        const scrollDirection = e.deltaY > 0 ? 1 : -1 // Positive for down, negative for up
         
-        // Check if we've completed all views
-        if (nextStep === 0 && step === VIEWS.length - 1) {
-          setTimeout(() => {
-            setAnimationComplete(true)
-            // Restore body scroll
-            document.body.style.overflow = 'auto'
-          }, 1000)
+        if (scrollDirection > 0 && step < VIEWS.length - 1) {
+          // Scroll down - next view
+          animateToStep(step + 1)
+          lastScrollTime.current = now
+        } else if (scrollDirection < 0 && step > 0) {
+          // Scroll up - previous view
+          animateToStep(step - 1)
+          lastScrollTime.current = now
         }
       }
     }
@@ -313,23 +384,24 @@ const CarAnimationComponent: React.FC = () => {
     }
   }, [isTransitioning, step, animationComplete])
 
+  // Handle bidirectional click navigation
   useEffect(() => {
-    const handleClick = (): void => {
+    const handleClick = (e: MouseEvent): void => {
       if (animationComplete) {
         return
       }
       
       if (!isTransitioning) {
-        const nextStep = (step + 1) % VIEWS.length
-        setStep(nextStep)
+        const clickX = e.clientX
+        const screenWidth = window.innerWidth
+        const isRightSide = clickX > screenWidth / 2
         
-        // Check if we've completed all views
-        if (nextStep === 0 && step === VIEWS.length - 1) {
-          setTimeout(() => {
-            setAnimationComplete(true)
-            // Restore body scroll
-            document.body.style.overflow = 'auto'
-          }, 1000)
+        if (isRightSide && step < VIEWS.length - 1) {
+          // Right side click - next view
+          animateToStep(step + 1)
+        } else if (!isRightSide && step > 0) {
+          // Left side click - previous view
+          animateToStep(step - 1)
         }
       }
     }
@@ -341,22 +413,143 @@ const CarAnimationComponent: React.FC = () => {
     return () => window.removeEventListener('click', handleClick)
   }, [isTransitioning, step, animationComplete])
 
+  // Add keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent): void => {
+      if (animationComplete) return
+      
+      if (!isTransitioning) {
+        if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && step < VIEWS.length - 1) {
+          animateToStep(step + 1)
+        } else if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && step > 0) {
+          animateToStep(step - 1)
+        }
+      }
+    }
+    
+    if (!animationComplete) {
+      window.addEventListener('keydown', handleKeyDown)
+    }
+    
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isTransitioning, step, animationComplete])
+
   return (
     <div
       ref={containerRef}
       style={{
-        width: '100vw',
+        width: '100%',
         height: '100vh',
-        position: 'relative', // Changed from fixed to relative
+        position: 'relative',
         left: 0,
         top: 0,
-        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #0d0d0d 75%, #000000 100%)',
+        background: 'transparent',
         overflow: 'hidden',
-        marginBottom: animationComplete ? '0' : '100vh' // Add space for next section
+        marginTop: '-80px', // Reduce space from navbar (adjust this value as needed)
+        paddingTop: '80px', // Add padding to compensate for negative margin
       }}
     >
       {/* Background text for the front view */}
       <BackgroundText show={current.key === 'front'} />
+
+      {/* Progress indicator */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          right: '40px',
+          transform: 'translateY(-50%)',
+          zIndex: 20,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+        }}
+      >
+        {VIEWS.map((_, index) => (
+          <div
+            key={index}
+            style={{
+              width: '3px',
+              height: '40px',
+              backgroundColor: index === step ? '#4ade80' : 'rgba(255, 255, 255, 0.3)',
+              borderRadius: '2px',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              // Add visual feedback for when animation is complete
+              opacity: animationComplete ? 0.8 : 1,
+              transform: animationComplete ? 'scale(1.1)' : 'scale(1)',
+            }}
+            onClick={() => handleProgressClick(index)}
+            onMouseEnter={(e) => {
+              if (animationComplete) {
+                e.currentTarget.style.backgroundColor = '#4ade80'
+                e.currentTarget.style.opacity = '1'
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (animationComplete) {
+                e.currentTarget.style.backgroundColor = index === step ? '#4ade80' : 'rgba(255, 255, 255, 0.3)'
+                e.currentTarget.style.opacity = '0.8'
+              }
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Optional hint when animation is complete */}
+      {animationComplete && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '45%',
+            right: '60px',
+            transform: 'translateY(-50%)',
+            zIndex: 19,
+            color: 'rgba(255, 255, 255, 0.6)',
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '0.8rem',
+            textAlign: 'right',
+            pointerEvents: 'none',
+            opacity: 0,
+            animation: 'fadeInHint 2s ease-in-out 1s forwards',
+          }}
+        >
+          Click to restart
+        </div>
+      )}
+
+      {/* Navigation hints */}
+      {!animationComplete && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 20,
+            color: 'rgba(255, 255, 255, 0.6)',
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '0.9rem',
+            textAlign: 'center',
+            display: 'flex',
+            gap: '30px',
+            alignItems: 'center',
+          }}
+        >
+          {step > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>↑</span>
+              <span>Scroll up</span>
+            </div>
+          )}
+          {step < VIEWS.length - 1 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>↓</span>
+              <span>Scroll down</span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Completion indicator */}
       {animationComplete && (
@@ -388,39 +581,17 @@ const CarAnimationComponent: React.FC = () => {
 
       <Canvas
         style={{
-          width: '100vw',
+          width: '100%',
           height: canvasHeight,
           display: 'block',
           zIndex: 2
         }}
         camera={{ position: [0, 0, typeof window !== 'undefined' && window.innerWidth > 900 ? 15 : 9], fov: 40 }}
-        shadows // Enable shadows for better realism
+        shadows
       >
-        {/* Add environment map for reflections */}
-        <mesh>
-          <sphereGeometry args={[100, 32, 32]} />
-          <meshBasicMaterial 
-            color="#1a1a1a" 
-            side={THREE.BackSide}
-            transparent
-            opacity={0.3}
-          />
-        </mesh>
-        
-        {/* Invisible reflector surfaces for more realistic reflections */}
-        <mesh position={[0, -5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[50, 50]} />
-          <meshStandardMaterial 
-            color="#000000" 
-            metalness={0.8} 
-            roughness={0.2}
-            transparent
-            opacity={0.3}
-          />
-        </mesh>
         
         {/* Ambient light for base illumination */}
-        <ambientLight intensity={0.4} />
+        <ambientLight intensity={0.2} />
         
         {/* Main directional light from top-right */}
         <directionalLight
@@ -442,7 +613,7 @@ const CarAnimationComponent: React.FC = () => {
         {/* Rim light from behind to create edge definition */}
         <directionalLight
           position={[0, 5, -10]}
-          intensity={0.2}
+          intensity={0.1}
           color="#ffffff"
         />
         
@@ -451,7 +622,7 @@ const CarAnimationComponent: React.FC = () => {
           position={[0, 20, 8]}
           angle={0.4}
           penumbra={0.5}
-          intensity={2}
+          intensity={1}
           castShadow
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
@@ -469,7 +640,7 @@ const CarAnimationComponent: React.FC = () => {
         </a.group>
       </Canvas>
       
-      {/* Sleek text overlay like in the image */}
+      {/* Sleek text overlay */}
       {current.text && (
         <div
           style={{
@@ -485,7 +656,7 @@ const CarAnimationComponent: React.FC = () => {
             transition: 'opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1)',
           }}
         >
-          {/* Main title with proper green-400 color */}
+          {/* Main title */}
           <h1
             style={{
               fontSize: typeof window !== 'undefined' && window.innerWidth > 900 ? '3.5rem' : '2.5rem',
@@ -506,11 +677,11 @@ const CarAnimationComponent: React.FC = () => {
             </span>
           </h1>
           
-          {/* Description text with green-400 color and bold */}
+          {/* Description text */}
           <p
             style={{
               fontSize: typeof window !== 'undefined' && window.innerWidth > 900 ? '1.1rem' : '0.95rem',
-              color: '#4ade80',
+              color: '#fff',
               margin: 0,
               lineHeight: 1.6,
               fontFamily: 'Inter, -apple-system, sans-serif',
@@ -522,7 +693,7 @@ const CarAnimationComponent: React.FC = () => {
             {current.text}
           </p>
           
-          {/* Decorative line with green-400 color */}
+          {/* Decorative line */}
           <div
             style={{
               width: '60px',
@@ -546,6 +717,16 @@ const CarAnimationComponent: React.FC = () => {
           0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
           40% { transform: translateY(-10px); }
           60% { transform: translateY(-5px); }
+        }
+        
+        @keyframes fadeInHint {
+          0% { opacity: 0; transform: translateY(-50%) translateX(10px); }
+          100% { opacity: 1; transform: translateY(-50%) translateX(0); }
+        }
+      `}</style>
+      <style jsx global>{`
+        body {
+          overflow-x: hidden;
         }
       `}</style>
     </div>
