@@ -8,6 +8,7 @@ import WhyChooseUs from '../components/StatItem'
 
 import ProfileCard from '../components/ProfileCard'
 import Footer from '../components/Footer'
+import CarAnimationComponent from '../components/CarAnimation'
   
 
 
@@ -139,24 +140,11 @@ export default function Home(): JSX.Element {
 
       {/* Hero Section */}
       <section id="home" className="pt-32 pb-20 px-6">
-        <div className="container mx-auto text-center">
-          <h2 className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent">
-            Protect Your Ride
-          </h2>
-          
-          <div className="relative max-w-4xl mx-auto mb-16">
-              <img
-                src="https://www.pngarts.com/files/8/Ferrari-SF90-Stradale-Transparent-Image.png"
-                alt="Ferrari Sports Car"
-               className="w-full h-full object-contain rounded-2xl"
-              />
-          </div>
-
-        </div>
+        <CarAnimationComponent/>
       </section>
 
       {/* Packages Section */}
-      <section className="py-20 px-6">
+      <section id="next-section" className="py-20 px-6">
         <div className="container mx-auto">
           <h3 className="text-4xl font-bold text-center mb-16">Star Packages</h3>
           
