@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Inter', 'sans-serif'],
+          sans: ['Montserrat', 'ui-sans-serif', 'system-ui'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

@@ -3,6 +3,13 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 import ReviewSection from '../components/ReviewSection'
+import CountUp from '../components/CounterSection'
+import WhyChooseUs from '../components/StatItem'
+
+import ProfileCard from '../components/ProfileCard'
+import Footer from '../components/Footer'
+  
+
 
 interface Package {
   name: string
@@ -198,6 +205,12 @@ export default function Home(): JSX.Element {
 
       <ReviewSection /> 
 
+      {/* Counter Section */}
+      <section className="w-full py-24 bg-gradient-to-br from-black via-zinc-900 to-zinc-950 text-white">
+        <WhyChooseUs />
+      </section>
+
+
       {/* Rating Section */}
       <section className="py-20 px-6">
         <div className="container mx-auto text-center">
@@ -234,15 +247,11 @@ export default function Home(): JSX.Element {
         </div>
       </section>
 
+    
       {/* Footer */}
-      <footer className="bg-black/50 backdrop-blur-lg border-t border-white/10 py-8 px-6">
-        <div className="container mx-auto text-center">
-          <div className="mx-auto w-72 h-auto py-8">
-              <img className="h-full w-auto" src="assets/images/logo-v2.png" alt="Mr.Gloss Ceramic Coating Logo"></img>
-          </div>
-          <p className="text-gray-400">© 2024 Mr. Gloss Ceramic Coating. All rights reserved.</p>
-        </div>
-      </footer>
+        
+        <Footer/>
+    
     </div>
   )
 }
