@@ -9,6 +9,14 @@ import WhyChooseUs from '../components/StatItem'
 import ProfileCard from '../components/ProfileCard'
 import Footer from '../components/Footer'
 import CarAnimationComponent from '../components/CarAnimation'
+import TiltCard from '../components/TiltCard'
+import { SpotlightRatingCard } from '../components/SpotlightRatingCard'
+
+import GlassIcons from '../components/GlassIcons'
+import { FiShield, FiDroplet, FiSun, FiLayers } from "react-icons/fi";
+
+
+
   
 
 
@@ -200,37 +208,66 @@ export default function Home(): JSX.Element {
 
 
       {/* Rating Section */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto text-center">
-          <div className="max-w-md mx-auto bg-gradient-to-r from-blue-900/50 to-blue-800/50 backdrop-blur-lg rounded-3xl p-8 border border-blue-400/20">
-            <div className="text-6xl font-bold text-yellow-400 mb-4">4.8</div>
-            <div className="flex justify-center space-x-1 mb-4">
-              {[...Array(5)].map((_, i: number) => (
-                <span key={i} className="text-yellow-400 text-2xl">★</span>
-              ))}
+      <div className="flex items-center justify-center p-5">
+        <SpotlightRatingCard
+          logo={
+            <div className="flex flex-col items-center mb-4">
+              <img src="assets/images/logo-v2.png" alt="Mr. Gloss Logo" className="w-32 h-32 object-contain mb-2" />
+              {/* <span className="text-2xl font-extrabold text-green-300 tracking-wide">MR.GLOSS</span>
+              <span className="text-sm font-semibold text-green-100 tracking-widest mt-1">CERAMIC COATING</span> */}
             </div>
-            <p className="text-xl font-semibold mb-6">Mr.Gloss Ceramic Coating</p>
-            <button className="bg-white text-blue-900 font-bold px-6 py-3 rounded-full hover:bg-gray-100 transition-colors">
-              Visit Google Profile
-            </button>
-          </div>
-        </div>
-      </section>
+          }
+          rating={4.8}
+          reviewCount={125}
+          reviewSource="Google Reviews"
+          glowColor="#10b981"
+          onViewReviews={() => {
+            window.open('https://your-google-reviews-link', '_blank');
+          }}
+        />
+      </div>
+      
+      
+
+
+
+
+
 
       {/* Services Section */}
       <section id="services" className="py-20 px-6">
         <div className="container mx-auto">
           <h3 className="text-4xl font-bold text-center mb-16">Services</h3>
-          
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {services.map((service: string, index: number) => (
-              <div
-                key={index}
-                className="bg-gradient-to-r from-green-400 to-green-600 text-black font-bold py-6 px-8 rounded-2xl text-center text-lg hover:from-green-500 hover:to-green-700 transition-all duration-300 transform hover:scale-105 cursor-pointer"
-              >
-                {service}
-              </div>
-            ))}
+          <div style={{ minHeight: '400px', position: 'relative' }}>
+            <GlassIcons
+              items={[
+                {
+                  icon: <FiShield size={32} />,
+                  color: 'green',
+                  label: 'Ceramic Coating',
+                  link: '/blog/ceramic-coating',
+                },
+                {
+                  icon: <FiDroplet size={32} />,
+                  color: 'blue',
+                  label: 'Car Wash & Detailing',
+                  link: '/blog/car-wash-detailing',
+                },
+                {
+                  icon: <FiSun size={32} />,
+                  color: 'orange',
+                  label: 'Sunfilm Installation',
+                  link: '/blog/sunfilm-installation',
+                },
+                {
+                  icon: <FiLayers size={32} />,
+                  color: 'purple',
+                  label: 'Paint Protection',
+                  link: '/blog/paint-protection',
+                },
+              ]}
+              className="justify-center"
+            />
           </div>
         </div>
       </section>
