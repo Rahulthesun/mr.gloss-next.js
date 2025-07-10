@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Phone, MapPin, MessageCircle, Mail, Home, Settings, Users, Info, ExternalLink } from 'lucide-react';
+import { Phone, MapPin, MessageCircle, Mail, Home, Settings,Info, ExternalLink } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (

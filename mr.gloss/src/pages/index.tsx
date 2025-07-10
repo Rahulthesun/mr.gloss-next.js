@@ -1,17 +1,13 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { useState } from 'react'
 
 import ReviewSection from '../components/ReviewSection'
-import CountUp from '../components/CounterSection'
 import WhyChooseUs from '../components/StatItem'
 
-import ProfileCard from '../components/ProfileCard'
 import Footer from '../components/Footer'
 import CarAnimationComponent from '../components/CarAnimation'
 import ShinyText from '../components/ShinyText'
 import BackgroundText from '../components/BackGroundText'
-import TiltCard from '../components/TiltCard'
 import { SpotlightRatingCard } from '../components/SpotlightRatingCard'
 
 import GlassIcons from '../components/GlassIcons'

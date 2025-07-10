@@ -48,7 +48,7 @@ export default function WhyChooseUs() {
       <div className="max-w-7xl mx-auto px-6 text-center">
         <h2 className="text-5xl font-extrabold text-white mb-4">Why Choose Mr.Gloss?</h2>
         <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-16">
-          We don’t just detail cars — we elevate them. Here's why our customers trust us.
+          We don&apos;t just detail cars — we elevate them. Here&apos;s why our customers trust us.
         </p>
 
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">

@@ -91,6 +91,8 @@ const GlossyCarModel: React.FC<GlossyCarModelProps> = ({ scale, position }) => {
     clearcoatRoughness: 0.05, // Smooth clear coat
     envMapIntensity: 2.0, // Enhanced environment reflection
   })
+
+  CarModel.displayName = 'CarModel';
   
   // Apply materials immediately when model loads
   const applyMaterials = (object: THREE.Object3D): void => {
