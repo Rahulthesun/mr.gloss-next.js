@@ -6,6 +6,7 @@ import { a, useSpring, config as springConfig } from '@react-spring/three'
 import * as THREE from 'three'
 import CarModel from '../components/CarModel'
 
+const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 // 5-Second Loader Component
 const LoaderModule: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0)
@@ -359,10 +360,14 @@ const AnimatedCar: React.FC<AnimatedCarProps> = ({ rotationY, rotationX, scale, 
       group.current.position.y = posY.get()
     }
   })
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
   
   return (
     <group ref={group}>
-      <GlossyCarModel scale={typeof window !== 'undefined' && window.innerWidth > 900 ? 2.8 : 1.5} position={[0, 0, 0]} />
+      <GlossyCarModel 
+      scale={isMobile ? 0.8 : 2.2} // Much smaller on mobile
+      position={[0, isMobile ? -0.5 : -1.5, 0]} />
     </group>
   )
 }
@@ -792,7 +797,11 @@ const CarAnimationComponent: React.FC = () => {
           display: 'block',
           zIndex: 2
         }}
-        camera={{ position: [0, 0, typeof window !== 'undefined' && window.innerWidth > 900 ? 15 : 7], fov: 40 }}
+        camera={{ 
+          position: [0, 0, isMobile ? 6 : 12], // Much closer on mobile
+        fov: isMobile ? 55 : 45, // Wider field of view on mobile
+        near: 0.1,
+        far: 1000}}
         shadows
         gl={{ 
           alpha: true,
