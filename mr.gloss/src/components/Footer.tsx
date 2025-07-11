@@ -195,20 +195,20 @@ const Footer: React.FC = () => {
             
             {/* Left: Developer Credit */}
             <a 
-              href="https://buildify-web.in/" 
+              href="https://buildify-web.com/" 
               className="group flex items-center space-x-3 text-gray-400 hover:text-white transition-all duration-300"
               target="_blank"
               rel="noopener noreferrer"
             >
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-white text-xs font-bold">&lt;/&gt;</span>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-white text-lg font-bold">&lt;/&gt;</span>
                 </div>
                 <div>
-                  <p className="font-bold text-sm group-hover:bg-gradient-to-r group-hover:from-green-400 group-hover:to-emerald-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  <p className="font-bold text-sm group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-violet-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                     Buildify-Web
                   </p>
-                  <p className="text-xs text-gray-500 group-hover:text-gray-400">Digital Solutions</p>
+                  <p className="text-xs text-gray-500 group-hover:text-gray-400">Digital Solutions for Businesses</p>
                 </div>
               </div>
             </a>
@@ -216,10 +216,7 @@ const Footer: React.FC = () => {
             {/* Center: Copyright */}
             <div className="text-center">
               <p className="text-gray-400 text-sm">
-                © 2025 <span className="font-semibold text-white">Mr.Gloss Ceramic Coating</span>. All rights reserved.
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                Made with ❤️ for automotive excellence
+                © {new Date().getFullYear()} <span className="font-semibold text-white">Mr.Gloss Ceramic Coating</span>. All rights reserved.
               </p>
             </div>
 

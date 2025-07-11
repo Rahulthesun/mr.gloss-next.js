@@ -1,6 +1,9 @@
 import Head from 'next/head'
 import { useState } from 'react'
 
+
+
+
 import ReviewSection from '../components/ReviewSection'
 import WhyChooseUs from '../components/StatItem'
 
@@ -95,7 +98,12 @@ export default function Home() {
         <meta name="description" content="Premium ceramic coating services for your vehicle" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        <script src="https://kit.fontawesome.com/c0974ead1d.js" crossorigin="anonymous"></script>
         <script src="https://cdn.tailwindcss.com"></script>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -150,7 +158,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="home" className="pt-10 pb-10 px-2">
-        <BackgroundText text="MR.GlOSS" />
+        <BackgroundText text="MR.GLOSS" />
         <CarAnimationComponent/>
       </section>
 
@@ -238,7 +246,7 @@ export default function Home() {
         <SpotlightRatingCard
           logo={
             <div className="flex flex-col items-center mb-4">
-              <img src="assets/images/logo-v2.png" alt="Mr. Gloss Logo" className="w-32 h-32 object-contain mb-2" />
+              <img src="assets/images/logo-v2.png" alt="Mr. Gloss Logo" className="w-3/4 h-auto object-contain m-5" />
               {/* <span className="text-2xl font-extrabold text-green-300 tracking-wide">MR.GLOSS</span>
               <span className="text-sm font-semibold text-green-100 tracking-widest mt-1">CERAMIC COATING</span> */}
             </div>
