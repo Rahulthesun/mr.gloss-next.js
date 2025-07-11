@@ -29,7 +29,7 @@ interface Service {
   icon?: string
 }
 
-export default function Home(): JSX.Element {
+export default function Home() {
   const [activePackage, setActivePackage] = useState<number | null>(null)
 
   const packages: Package[] = [
@@ -153,58 +153,77 @@ export default function Home(): JSX.Element {
         <BackgroundText text="MR.GlOSS" />
         <CarAnimationComponent/>
       </section>
-s
+
       {/* Packages Section */}
       <section id="next-section" className="py-20 px-6">
-        <div className="container mx-auto">
-          <h3 className="text-5xl font-extrabold text-center mb-16">Star Packages</h3>
+  <div className="container mx-auto">
+    <h3 className="text-5xl font-extrabold text-center mb-16">Star Packages</h3>
+    
+    <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      {packages.map((pkg: Package, index: number) => (
+        <div 
+          key={index}
+          className={`bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
+            activePackage === index ? 'ring-2 ring-green-400' : ''
+          }`}
+          onMouseEnter={() => handlePackageHover(index)}
+          onMouseLeave={handlePackageLeave}
+        >
+            <ShinyText
+              text={pkg.name}
+              disabled={false}
+              speed={3}
+              className="text-4xl font-bold tracking-wide mb-6 font-montserrat"
+              gradient={
+                pkg.name === 'Gold'
+                  ? 'linear-gradient(90deg, #FFD700 0%, #FFFACD 50%, #FFD700 100%)'
+                  : pkg.name === 'Silver'
+                  ? 'linear-gradient(90deg, #C0C0C0 0%, #F8F8FF 50%, #C0C0C0 100%)'
+                  : pkg.name === 'Platinum'
+                  ? 'linear-gradient(90deg, #a259ff 0%, #6e27c5 50%, #a259ff 100%)'
+                  : undefined
+              }
+            />
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {packages.map((pkg: Package, index: number) => (
-              <div 
-                key={index}
-                className={`bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
-                  activePackage === index ? 'ring-2 ring-green-400' : ''
-                }`}
-                onMouseEnter={() => handlePackageHover(index)}
-                onMouseLeave={handlePackageLeave}
-              >
-                <ShinyText 
-  text={pkg.name}
-  disabled={false}
-  speed={3}
-  extraBold={true}
-  className={`text-4xl font-black mb-6 bg-gradient-to-r ${pkg.color} bg-clip-text text-transparent`}
-/>
-                
-                <div className="space-y-4 mb-8">
-                  {pkg.features.map((feature: string, featureIndex: number) => (
-                    <div key={featureIndex} className="flex items-center space-x-3">
-                      <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
-                        <span className="text-black text-xs">✓</span>
-                      </div>
-                      <span className="text-sm text-gray-300">{feature}</span>
-                    </div>
-                  ))}
+          <div className="space-y-4 mb-8">
+            {pkg.features.map((feature: string, featureIndex: number) => (
+              <div key={featureIndex} className="flex items-center space-x-3">
+                <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
+                  <span className="text-black text-xs">✓</span>
                 </div>
-                
-                <button 
-                  onClick={() => handleEnquireClick(pkg.name)}
-                  className="w-full bg-gradient-to-r from-green-400 to-green-600 text-black font-bold py-3 px-6 rounded-xl hover:from-green-500 hover:to-green-700 transition-all duration-300 transform hover:scale-105"
-                >
-                  Enquire Now
-                </button>
+                <span className="text-sm text-gray-300">{feature}</span>
               </div>
             ))}
           </div>
           
-          <div className="text-center mt-12">
-            <button className="bg-white/10 backdrop-blur-lg border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white/20 transition-all duration-300">
-              More Details About Packages
-            </button>
-          </div>
+          <button 
+            onClick={() => handleEnquireClick(pkg.name)}
+            className="w-full bg-gradient-to-r from-green-400 to-green-600 text-black font-bold py-3 px-6 rounded-xl hover:from-green-500 hover:to-green-700 transition-all duration-300 transform hover:scale-105"
+          >
+            Enquire Now
+          </button>
         </div>
-      </section>
+      ))}
+    </div>
+    
+    <div className="text-center mt-12">
+      <button className="bg-white/10 backdrop-blur-lg border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white/20 transition-all duration-300">
+        More Details About Packages
+      </button>
+    </div>
+  </div>
+</section>
+
+      
+
+
+
+
+
+
+
+
+
 
       <ReviewSection /> 
 
