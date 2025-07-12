@@ -366,8 +366,8 @@ const AnimatedCar: React.FC<AnimatedCarProps> = ({ rotationY, rotationX, scale, 
   return (
     <group ref={group}>
       <GlossyCarModel 
-      scale={isMobile ? 0.8 : 2.2} // Much smaller on mobile
-      position={[0, isMobile ? -0.5 : -1.5, 0]} />
+      scale={isMobile ? 0.8 : 2.7} // Much smaller on mobile
+      position={[0, isMobile ? -0.5 : -0.5, 0]} />
     </group>
   )
 }
