@@ -16,6 +16,9 @@ import { SpotlightRatingCard } from '../components/SpotlightRatingCard'
 import GlassIcons from '../components/GlassIcons'
 import { FiShield, FiDroplet, FiSun, FiLayers } from "react-icons/fi";
 
+import RibbonCursor from '../components/RibbonCursor';
+
+
 
 
   
@@ -93,6 +96,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#001a0d] via-[#001100] to-black">
+      <RibbonCursor 
+        color="#ffffff"
+        size={15}
+        trailLength={12}
+        speed={0.8}
+      />
       <Head>
         <title>Mr. Gloss Ceramic Coating - Protect Your Ride</title>
         <meta name="description" content="Premium ceramic coating services for your vehicle" />
@@ -180,15 +189,15 @@ export default function Home() {
             <ShinyText
               text={pkg.name}
               disabled={false}
-              speed={3}
-              className="text-4xl font-bold tracking-wide mb-6 font-montserrat"
+              speed={8}
+              className="text-4xl font-black tracking-wide mb-6 font-montserrat uppercase drop-shadow-2xl"
               gradient={
                 pkg.name === 'Gold'
-                  ? 'linear-gradient(90deg, #FFD700 0%, #FFFACD 50%, #FFD700 100%)'
+                  ? 'linear-gradient(90deg, #FFD700 0%, #FFA500 25%, #FFD700 50%, #FFA500 75%, #FFD700 100%)'
                   : pkg.name === 'Silver'
-                  ? 'linear-gradient(90deg, #C0C0C0 0%, #F8F8FF 50%, #C0C0C0 100%)'
+                  ? 'linear-gradient(90deg, #696969 0%, #A9A9A9 25%, #696969 50%, #A9A9A9 75%, #696969 100%)'
                   : pkg.name === 'Platinum'
-                  ? 'linear-gradient(90deg, #a259ff 0%, #6e27c5 50%, #a259ff 100%)'
+                  ? 'linear-gradient(90deg, #E5E4E2 0%, #C0C0C0 25%, #E5E4E2 50%, #C0C0C0 75%, #E5E4E2 100%)'
                   : undefined
               }
             />
@@ -272,7 +281,7 @@ export default function Home() {
       <section id="services" className="py-20 px-6">
         <div className="container mx-auto">
           <h3 className="text-4xl font-bold text-center mb-16">Services</h3>
-          <div style={{ minHeight: '400px', position: 'relative' }}>
+          <div className="flex justify-center items-center" style={{ minHeight: '400px' }}>
             <GlassIcons
               items={[
                 {
@@ -283,24 +292,24 @@ export default function Home() {
                 },
                 {
                   icon: <FiDroplet size={32} />,
-                  color: 'blue',
+                  color: 'green',
                   label: 'Car Wash & Detailing',
                   link: '/blog/car-wash-detailing',
                 },
                 {
                   icon: <FiSun size={32} />,
-                  color: 'orange',
+                  color: 'green',
                   label: 'Sunfilm Installation',
                   link: '/blog/sunfilm-installation',
                 },
                 {
                   icon: <FiLayers size={32} />,
-                  color: 'purple',
+                  color: 'green',
                   label: 'Paint Protection',
                   link: '/blog/paint-protection',
                 },
               ]}
-              className="justify-center"
+              className="justify-center items-center"
             />
           </div>
         </div>
