@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect , useState } from 'react'
 
 
 
@@ -34,6 +34,25 @@ interface Service {
 
 export default function Home() {
   const [activePackage, setActivePackage] = useState<number | null>(null)
+
+  
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const updateScale = () => {
+      const width = window.innerWidth;
+      setScale(
+        width > 1440 ? 1 : 
+        width > 1280 ? 0.9 : 
+        width > 1024 ? 0.85 : 
+        0.8
+      );
+    };
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   const packages: Package[] = [
     {
@@ -135,8 +154,19 @@ export default function Home() {
         />
       </Head>
 
+      <div classname="bg-gradient-to-b from-[#001a0d] via-[#001100] to-black" style={{
+        transform: `scale(${scale})`,
+        transformOrigin: 'top left',
+        width: `${100/scale}%`,
+        height: `${100/scale}%`,
+        position: 'absolute',
+        
+      }}>
+        
+      
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+      <nav className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10" >
         <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="max-w-[180px] h-auto flex items-center">
@@ -163,7 +193,7 @@ export default function Home() {
       </section>
 
       {/* Packages Section */}
-      <section id="next-section" className="py-20 px-6">
+      <section id="next-section" className="py-20 px-6 bg-gradient-to-b from-[#001a0d] via-[#001100] to-black ">
   <div className="container mx-auto">
     <h3 className="text-5xl font-extrabold text-center mb-16">Star Packages</h3>
     
@@ -215,25 +245,21 @@ export default function Home() {
     </div>
     
     <div className="text-center mt-12">
-      <button className="bg-white/10 backdrop-blur-lg border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white/20 transition-all duration-300">
+      <button className="text-lg  bg-white/10 backdrop-blur-lg border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white/20 transition-all duration-300 ">
         More Details About Packages
       </button>
     </div>
   </div>
 </section>
 
-      
-
-
-
-
-
-
-
-
-
 
       <ReviewSection /> 
+
+      <div className="text-center mt-12">
+        <button className="text-lg  bg-white/10  border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white/20 transition-all duration-300 ">
+          See Our Star Reviews 
+        </button>
+      </div>
 
       {/* Counter Section */}
       <section className="w-full py-24 bg-gradient-to-br from-black via-zinc-900 to-zinc-950 text-white">
@@ -311,6 +337,8 @@ export default function Home() {
         
         <Footer/>
     
+    </div>
+
     </div>
   )
 }
