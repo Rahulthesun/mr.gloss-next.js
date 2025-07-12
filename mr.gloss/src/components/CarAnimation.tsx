@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { a, useSpring, config as springConfig } from '@react-spring/three'
+import { a, useSpring, config as springConfig, SpringValue } from '@react-spring/three'
 import * as THREE from 'three'
 import CarModel from '../components/CarModel'
 
@@ -74,31 +74,15 @@ const LoaderModule: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     >
       {/* Animated Car Icon */}
       <div style={{ marginBottom: '40px', position: 'relative' }}>
-        <svg
-          width="80"
-          height="40"
-          viewBox="0 0 80 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ animation: 'carBounce 2s ease-in-out infinite' }}
-        >
-          <path
-            d="M10 25H5C3.5 25 2 23.5 2 22V20C2 18.5 3.5 17 5 17H10V25Z"
-            fill="#4ade80"
-            opacity="0.8"
-          />
-          <path
-            d="M10 17H20L25 10H55L60 17H70V25H60V27C60 28.5 58.5 30 57 30H55C53.5 30 52 28.5 52 27V25H28V27C28 28.5 26.5 30 25 30H23C21.5 30 20 28.5 20 27V25H10V17Z"
-            fill="#ffffff"
-          />
-          <circle cx="22" cy="27" r="3" fill="#4ade80" />
-          <circle cx="58" cy="27" r="3" fill="#4ade80" />
-          <path
-            d="M70 25H75C76.5 25 78 23.5 78 22V20C78 18.5 76.5 17 75 17H70V25Z"
-            fill="#4ade80"
-            opacity="0.8"
-          />
-        </svg>
+        <img
+          src="assets/images/logo-v2.png"
+          alt="Mr.Gloss Logo"
+          style={{ 
+            width: '120px',
+            height: 'auto',
+            animation: 'carBounce 2s ease-in-out infinite'
+          }}
+        />
       </div>
       
       {/* Loading Text */}
@@ -360,14 +344,46 @@ const AnimatedCar: React.FC<AnimatedCarProps> = ({ rotationY, rotationX, scale, 
       group.current.position.y = posY.get()
     }
   })
+  
+  // Improved responsive scaling
+  const getResponsiveScale = () => {
+    if (typeof window === 'undefined') return 1.5
+    
+    const width = window.innerWidth
+    const height = window.innerHeight
+    
+    // Mobile devices
+    if (width <= 768) {
+      return height <= 667 ? 1.2 : 1.5 // iPhone SE and smaller
+    }
+    
+    // Tablets
+    if (width <= 1024) {
+      return 1.8
+    }
+    
+    // Small laptops (13-14 inch)
+    if (width <= 1366) {
+      return 3.0
+    }
+    
+    // Medium laptops (15-16 inch)
+    if (width <= 1920) {
+      return 3.0
+    }
+    
+    // Large screens
+    return 3.0
+  }
+  
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-
   
   return (
     <group ref={group}>
       <GlossyCarModel 
-      scale={isMobile ? 0.8 : 2.7} // Much smaller on mobile
-      position={[0, isMobile ? -0.5 : -0.5, 0]} />
+        scale={getResponsiveScale()}
+        position={[0, isMobile ? -0.3 : -0.5, 0]} 
+      />
     </group>
   )
 }
@@ -416,7 +432,10 @@ const CarAnimationComponent: React.FC = () => {
   const [showText, setShowText] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [canvasHeight, setCanvasHeight] = useState(
-    typeof window !== 'undefined' ? window.innerHeight : 800
+    typeof window !== 'undefined'
+  ? (window.innerWidth <= 768 ? 600 : window.innerHeight)
+  : 800
+
   )
   const [animationComplete, setAnimationComplete] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)

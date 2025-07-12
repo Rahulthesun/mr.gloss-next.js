@@ -196,7 +196,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="pt-10 pb-10 px-2">
+      <section id="home" className="py-5 sm:py-10 md:py-20 px-2">
         <BackgroundText text="MR.GLOSS" />
         <CarAnimationComponent/>
       </section>
